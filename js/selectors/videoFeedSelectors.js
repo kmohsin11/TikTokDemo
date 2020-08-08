@@ -1,0 +1,1 @@
+export const videoFeed = (state) => state.videoFeed;
