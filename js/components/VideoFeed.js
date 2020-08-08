@@ -9,6 +9,7 @@ class VideoFeed extends React.Component {
   onPageSelected = (e) => {
     const index = e.nativeEvent.position;
     if (this.props.videos[index]) {
+      this.props.updateCurrentVideoId(this.props.videos[index].id);
       if (this.props.videos.length - index < 3) {
         this.props.requestMoreVideos();
       }
@@ -29,6 +30,7 @@ class VideoFeed extends React.Component {
                 <Video source={videoConstants[data.path]}
                          style={{flex: 1}}
                          resizeMode="cover"
+                         paused={this.props.currentVideoId != data.id}
                          repeat={true}>
                 </Video>
             </View>

@@ -22,13 +22,22 @@ class Home extends React.Component {
     this.props.loadInitialVideos(data);
   };
 
+  updateCurrentVideoId = (id) => {
+    this.setState({currentVideoId: id});
+  } 
+
+  state = {
+    currentVideoId: 0
+  }
+
   componentDidMount = () => {
     this.loadInitialVideos();
   };
 
   shouldComponentUpdate = (nextProps, nextState) => {
     return (
-      this.props.videos.length !== nextProps.videos.length
+      this.props.videos.length !== nextProps.videos.length ||
+      this.state.currentVideoId !== nextState.currentVideoId
     );
   };  
 
@@ -36,7 +45,10 @@ class Home extends React.Component {
     return (
       <View style={{ flex: 1}}>
         <VideoFeed videos={this.props.videos} 
-                   requestMoreVideos={this.props.requestMoreVideos}/>        
+                   requestMoreVideos={this.props.requestMoreVideos}
+                   currentVideoId={this.state.currentVideoId}
+                   updateCurrentVideoId={this.updateCurrentVideoId}                     
+                   />        
       </View>
     );
   }
