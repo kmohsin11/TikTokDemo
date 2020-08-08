@@ -26,10 +26,17 @@ class Home extends React.Component {
     this.loadInitialVideos();
   };
 
+  shouldComponentUpdate = (nextProps, nextState) => {
+    return (
+      this.props.videos.length !== nextProps.videos.length
+    );
+  };  
+
   render = () => {
     return (
       <View style={{ flex: 1}}>
-        <VideoFeed videos={this.props.videos} />        
+        <VideoFeed videos={this.props.videos} 
+                   requestMoreVideos={this.props.requestMoreVideos}/>        
       </View>
     );
   }
@@ -43,7 +50,8 @@ const mapStateToProps = (state, props) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    loadInitialVideos: (data) => (dispatch(videoFeedActions.loadInitialVideos(data)))
+    loadInitialVideos: (data) => (dispatch(videoFeedActions.loadInitialVideos(data))),
+    requestMoreVideos: () => (dispatch(videoFeedActions.updateVideoFeed()))
   };
 };
 

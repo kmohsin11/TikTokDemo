@@ -6,3 +6,10 @@ export const loadInitialVideos = (data) => {
     videos: data
   }
 }
+
+export const updateVideoFeed = (data) => {
+  return {
+    type: types.UPDATE_VIDEO_FEED,
+    videos: data
+  }
+}
