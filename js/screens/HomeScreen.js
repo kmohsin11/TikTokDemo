@@ -3,7 +3,7 @@ import { View, TouchableHighlight, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import { videoFeedSelectors } from '../selectors';
+import { videoFeedSelectors, commentSelectors } from '../selectors';
 import { videoFeedActions } from '../actions';
 import { VideoFeed } from '../components';
 import { videoConstants } from '../constants/assetConstants';
@@ -37,7 +37,9 @@ class Home extends React.Component {
   }
 
   handleCommentsTap = () => {
-    this.props.navigation.push(screenNames.comments)
+    this.props.navigation.push(screenNames.comments, {
+      videoId: this.state.currentVideoId
+    });
   }
   state = {
     currentVideoId: 0
@@ -50,7 +52,8 @@ class Home extends React.Component {
   shouldComponentUpdate = (nextProps, nextState) => {
     return (
       this.props.videos.length !== nextProps.videos.length ||
-      this.state.currentVideoId !== nextState.currentVideoId
+      this.state.currentVideoId !== nextState.currentVideoId ||
+      (this.props.comments(this.state.currentVideoId) || []).length !== (nextProps.comments(nextState.currentVideoId) || []).length
     );
   };  
 
@@ -67,7 +70,7 @@ class Home extends React.Component {
           <View style={{flex: 1, alignItems:'center'}}>
             <Icon name="commenting-o" size={40}/>
             <Text>
-              0
+              {(this.props.comments(this.state.currentVideoId) || []).length}
             </Text>
           </View>
         </TouchableHighlight>
@@ -79,6 +82,7 @@ class Home extends React.Component {
 const mapStateToProps = (state, props) => {
   return {
     videos: videoFeedSelectors.videoFeed(state),
+    comments: (videoId) => commentSelectors.getComments(state, videoId)    
   };
 };
 

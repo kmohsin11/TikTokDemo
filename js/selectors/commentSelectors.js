@@ -1,0 +1,1 @@
+export const getComments = (state, videoId) => state.comments[videoId]
