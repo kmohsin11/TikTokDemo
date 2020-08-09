@@ -11,6 +11,7 @@ class VideoFeed extends React.Component {
     if (this.props.videos[index]) {
       this.props.updateCurrentVideoId(this.props.videos[index].id);
       if (this.props.videos.length - index < 3) {
+        // request more videos when threshold is reached.
         this.props.requestMoreVideos();
       }
     }

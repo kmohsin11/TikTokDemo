@@ -1,14 +1,24 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, TouchableHighlight, StyleSheet, Text } from 'react-native';
 import { connect } from 'react-redux';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import { videoFeedSelectors } from '../selectors';
 import { videoFeedActions } from '../actions';
 import { VideoFeed } from '../components';
 import { videoConstants } from '../constants/assetConstants';
+import { screenNames } from '../constants/screenNames';
+
+const styles = StyleSheet.create({
+  commentButton: {
+    position: 'absolute',
+    left: 20,
+    bottom: 50,
+    backgroundColor: "white"
+  }
+});
 
 class Home extends React.Component {
-
   loadInitialVideos = () => {
     const numberOfInitialVideos = 5;
     var data = [];
@@ -24,8 +34,11 @@ class Home extends React.Component {
 
   updateCurrentVideoId = (id) => {
     this.setState({currentVideoId: id});
-  } 
+  }
 
+  handleCommentsTap = () => {
+    this.props.navigation.push(screenNames.comments)
+  }
   state = {
     currentVideoId: 0
   }
@@ -47,8 +60,17 @@ class Home extends React.Component {
         <VideoFeed videos={this.props.videos} 
                    requestMoreVideos={this.props.requestMoreVideos}
                    currentVideoId={this.state.currentVideoId}
-                   updateCurrentVideoId={this.updateCurrentVideoId}                     
-                   />        
+                   updateCurrentVideoId={this.updateCurrentVideoId}
+                   />
+        <TouchableHighlight style={styles.commentButton}
+                            onPress={this.handleCommentsTap}>
+          <View style={{flex: 1, alignItems:'center'}}>
+            <Icon name="commenting-o" size={40}/>
+            <Text>
+              0
+            </Text>
+          </View>
+        </TouchableHighlight>
       </View>
     );
   }
